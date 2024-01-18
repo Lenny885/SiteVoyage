@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 18 jan. 2024 à 09:49
+-- Généré le : jeu. 18 jan. 2024 à 09:55
 -- Version du serveur : 5.7.36
 -- Version de PHP : 7.4.26
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `bd_sitevoyage`
 --
-CREATE DATABASE IF NOT EXISTS `bd_sitevoyage` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `bd_sitevoyage`;
 
 -- --------------------------------------------------------
 
@@ -76,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `pay_pays` (
   `PAY_Avantage` text,
   `PAY_Inconvenient` text,
   `PAY_ImgPays` int(11) DEFAULT NULL,
+  `PAY_ContinentPays` varchar(38) NOT NULL,
   PRIMARY KEY (`PAY_idPays`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
