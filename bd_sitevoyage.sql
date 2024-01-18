@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 14 déc. 2023 à 10:21
+-- Généré le : jeu. 18 jan. 2024 à 09:49
 -- Version du serveur : 5.7.36
 -- Version de PHP : 7.4.26
 
@@ -34,43 +34,32 @@ CREATE TABLE IF NOT EXISTS `avt_aventure` (
   `AVT_IdAventure` int(11) NOT NULL AUTO_INCREMENT,
   `AVT_NomAventure` varchar(38) NOT NULL,
   `AVT_DescAventure` text NOT NULL,
-  `AVT_NomLocAventure1` varchar(38) DEFAULT NULL,
-  `AVT_DescLocAventure1` text,
-  `AVT_NomLoc Aventure2` varchar(38) DEFAULT NULL,
-  `AVT_DescLocAventure2` text,
-  PRIMARY KEY (`AVT_IdAventure`)
+  `PAY_IdPAys` int(11) NOT NULL,
+  `LOC_IdLocalisation` int(11) NOT NULL,
+  PRIMARY KEY (`AVT_IdAventure`),
+  KEY `PAY_IdPAys` (`PAY_IdPAys`),
+  KEY `LOC_IdLocalisation` (`LOC_IdLocalisation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `cat_categorie`
+-- Structure de la table `loc_localisation`
 --
 
-DROP TABLE IF EXISTS `cat_categorie`;
-CREATE TABLE IF NOT EXISTS `cat_categorie` (
-  `CAT_IdCategorie` int(11) NOT NULL AUTO_INCREMENT,
-  `CAT_LibCategorie` varchar(38) NOT NULL,
-  PRIMARY KEY (`CAT_IdCategorie`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `loc_location`
---
-
-DROP TABLE IF EXISTS `loc_location`;
-CREATE TABLE IF NOT EXISTS `loc_location` (
-  `LOC_IdLocation` int(11) NOT NULL AUTO_INCREMENT,
-  `LOC_NomLocation` varchar(38) NOT NULL,
-  `LOC_NoteLocation` int(2) DEFAULT NULL,
-  `LOC_DescLocation` text NOT NULL,
+DROP TABLE IF EXISTS `loc_localisation`;
+CREATE TABLE IF NOT EXISTS `loc_localisation` (
+  `LOC_IdLocalisation` int(11) NOT NULL AUTO_INCREMENT,
+  `LOC_NomLocalisation` varchar(38) NOT NULL,
+  `LOC_NoteLocalisation` int(2) DEFAULT NULL,
+  `LOC_DescLocalisation` text NOT NULL,
   `LOC_AvisPerso` text,
-  `LOC_DateLocation` date NOT NULL,
-  `LOC_ImgLocation` varchar(20) NOT NULL,
-  PRIMARY KEY (`LOC_IdLocation`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `LOC_DateLocalisation` date NOT NULL,
+  `LOC_ImgLocalisation` varchar(20) NOT NULL,
+  `PAY_IdPays` int(11) NOT NULL,
+  PRIMARY KEY (`LOC_IdLocalisation`),
+  KEY `PAY_IdPays` (`PAY_IdPays`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -83,39 +72,29 @@ CREATE TABLE IF NOT EXISTS `pay_pays` (
   `PAY_idPays` int(11) NOT NULL AUTO_INCREMENT,
   `PAY_NomPays` varchar(38) NOT NULL,
   `PAY_NotePays` int(2) DEFAULT NULL,
-  `LOC_IdLocation` int(11) DEFAULT NULL,
   `PAY_DescPays` text,
   `PAY_Avantage` text,
   `PAY_Inconvenient` text,
-  `CAT_IdCategorie` int(11) DEFAULT NULL,
   `PAY_ImgPays` int(11) DEFAULT NULL,
-  PRIMARY KEY (`PAY_idPays`),
-  KEY `CAT_IdCategorie` (`CAT_IdCategorie`),
-  KEY `LOC_IdLocation` (`LOC_IdLocation`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `pay_pays`
---
-
-INSERT INTO `pay_pays` (`PAY_idPays`, `PAY_NomPays`, `PAY_NotePays`, `LOC_IdLocation`, `PAY_DescPays`, `PAY_Avantage`, `PAY_Inconvenient`, `CAT_IdCategorie`, `PAY_ImgPays`) VALUES
-(7, 'FRANCE', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(8, 'ITALIE', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(9, 'ESPAGNE', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(10, 'BRESIL', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(11, 'CANADA', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(12, 'MEXIQUE', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+  PRIMARY KEY (`PAY_idPays`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contraintes pour les tables déchargées
 --
 
 --
--- Contraintes pour la table `pay_pays`
+-- Contraintes pour la table `avt_aventure`
 --
-ALTER TABLE `pay_pays`
-  ADD CONSTRAINT `pay_pays_ibfk_1` FOREIGN KEY (`CAT_IdCategorie`) REFERENCES `cat_categorie` (`CAT_IdCategorie`),
-  ADD CONSTRAINT `pay_pays_ibfk_2` FOREIGN KEY (`LOC_IdLocation`) REFERENCES `loc_location` (`LOC_IdLocation`);
+ALTER TABLE `avt_aventure`
+  ADD CONSTRAINT `avt_aventure_ibfk_1` FOREIGN KEY (`PAY_IdPAys`) REFERENCES `pay_pays` (`PAY_idPays`),
+  ADD CONSTRAINT `avt_aventure_ibfk_2` FOREIGN KEY (`LOC_IdLocalisation`) REFERENCES `loc_localisation` (`LOC_IdLocalisation`);
+
+--
+-- Contraintes pour la table `loc_localisation`
+--
+ALTER TABLE `loc_localisation`
+  ADD CONSTRAINT `loc_localisation_ibfk_1` FOREIGN KEY (`PAY_IdPays`) REFERENCES `pay_pays` (`PAY_idPays`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
